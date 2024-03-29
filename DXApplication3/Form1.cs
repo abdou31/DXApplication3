@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DXApplication3.Models;
+using DXApplication3.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,25 +13,18 @@ namespace DXApplication3
 {
     public partial class Form1 : DevExpress.XtraEditors.XtraForm
     {
-        public Form1()
+        private readonly UserService _userService;
+        public Form1(UserService userService)
         {
             InitializeComponent();
+            _userService = userService;
         }
 
         private void simpleButton1_Click(object sender, EventArgs e)
         {
-            DateTime birthDate = dateTimePicker1.Value;
-            DateTime today = DateTime.Today;
-            int age = today.Year - birthDate.Year;
-
-            // Check if the birthday for this year has not occurred yet
-            if (birthDate > today.AddYears(-age))
-            {
-                age--;
-            }
-
+            User user = new User(textEdit1.Text,dateTimePicker1.Value);
+            int age = _userService.CalculateAge(user);
             labelControl3.Text = $"Your age is : {age}";
-
         }
     }
 }
